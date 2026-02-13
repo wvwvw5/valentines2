@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Валентинка 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background-color: #f7f2eb;
+      color: #173d1a;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 40px 24px;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10% { transform: translateX(-12px) rotate(-2deg); }
+      20% { transform: translateX(12px) rotate(2deg); }
+      30% { transform: translateX(-10px) rotate(-1deg); }
+      40% { transform: translateX(10px) rotate(1deg); }
+      50% { transform: translateX(-6px); }
+      60% { transform: translateX(6px); }
+      70% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* --- Hearts decoration --- */
+    .hearts-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart-float {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.15;
+      animation: heartRise linear infinite;
+    }
+
+    @keyframes heartRise {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* --- Screen 1: Question --- */
+    .heart-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .question-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #173d1a;
+      margin-bottom: 48px;
+      max-width: 320px;
+    }
+
+    .question-title span {
+      color: #c33b2a;
+      font-style: italic;
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      max-width: 320px;
+      justify-content: space-between;
+    }
+
+    .btn {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      padding: 16px 40px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-yes {
+      background-color: #c33b2a;
+      color: #fff;
+    }
+
+    .btn-yes:active {
+      transform: scale(0.95);
+      background-color: #a83220;
+    }
+
+    .btn-no {
+      background-color: transparent;
+      color: #173d1a;
+      border: 2px solid #173d1a;
+    }
+
+    .btn-no:active {
+      transform: scale(0.95);
+    }
+
+    .wrong-answer {
+      display: none;
+      background-color: #c33b2a;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 32px;
+      letter-spacing: 0.5px;
+    }
+
+    .wrong-answer.show {
+      display: inline-block;
+      animation: shake 0.6s ease;
+    }
+
+    /* --- Screen 2: Cathedral --- */
+    .cathedral-emoji {
+      font-size: 80px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .screen-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c33b2a;
+      margin-bottom: 16px;
+    }
+
+    .screen-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #173d1a;
+      margin-bottom: 20px;
+      max-width: 340px;
+    }
+
+    .screen-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #173d1a;
+      opacity: 0.8;
+      max-width: 300px;
+      margin-bottom: 40px;
+    }
+
+    .candles {
+      font-size: 32px;
+      margin-bottom: 32px;
+      letter-spacing: 8px;
+    }
+
+    .btn-next {
+      background-color: #c33b2a;
+      color: #fff;
+    }
+
+    .btn-next:active {
+      transform: scale(0.95);
+      background-color: #a83220;
+    }
+
+    /* --- Screen 3: Pasta --- */
+    .pasta-emoji {
+      font-size: 72px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .pasta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #c33b2a;
+      margin-bottom: 8px;
+    }
+
+    .pasta-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: #173d1a;
+      opacity: 0.6;
+      margin-bottom: 28px;
+    }
+
+    .pasta-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #173d1a;
+      opacity: 0.8;
+      max-width: 300px;
+      margin-bottom: 40px;
+    }
+
+    .final-heart {
+      font-size: 48px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background-color: #c33b2a;
+      margin: 20px auto;
+      border-radius: 2px;
+    }
+
+    /* Decorative line */
+    .ornament {
+      color: #c33b2a;
+      font-size: 20px;
+      letter-spacing: 12px;
+      margin-bottom: 24px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating hearts background -->
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <!-- Screen 1: The Question -->
+  <div class="screen active" id="screen1">
+    <div class="heart-icon">💌</div>
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1 class="question-title">
+      <span>Дарья,</span><br>
+      ты будешь моей валентинкой?
+    </h1>
+    <div class="buttons-row">
+      <button class="btn btn-yes" id="btnYes">Да</button>
+      <button class="btn btn-no" id="btnNo">Нет</button>
+    </div>
+    <div class="wrong-answer" id="wrongAnswer">Ответ неправильный!</div>
+  </div>
+
+  <!-- Screen 2: Cathedral -->
+  <div class="screen" id="screen2">
+    <div class="cathedral-emoji">⛪</div>
+    <div class="screen-subtitle">14 февраля</div>
+    <h2 class="screen-title">Приглашаю тебя на концерт органа и голоса при свечах</h2>
+    <div class="divider"></div>
+    <p class="screen-text">
+      Евангелическо-лютеранский кафедральный собор святых Петра и Павла
+    </p>
+    <div class="candles">🕯️🕯️🕯️</div>
+    <button class="btn btn-next" id="btnNext">А потом?</button>
+  </div>
+
+  <!-- Screen 3: Pasta -->
+  <div class="screen" id="screen3">
+    <div class="pasta-emoji">🍝</div>
+    <div class="screen-subtitle">продолжение вечера</div>
+    <h2 class="pasta-title">PASTA</h2>
+    <p class="pasta-subtitle">на Солянке</p>
+    <div class="divider"></div>
+    <p class="pasta-text">
+      А продолжим вечер мы в уютном итальянском ресторане Pasta на Солянке 🍷
+    </p>
+    <div class="ornament">✦ ✦ ✦</div>
+    <div class="final-heart">❤️</div>
+  </div>
+
+  <script>
+    // Floating hearts
+    const heartsBg = document.getElementById('heartsBg');
+    const heartEmojis = ['❤️', '💕', '💗', '💖', '🤍'];
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart-float';
+      heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.fontSize = (14 + Math.random() * 18) + 'px';
+      const duration = 8 + Math.random() * 12;
+      heart.style.animationDuration = duration + 's';
+      heart.style.animationDelay = Math.random() * 2 + 's';
+      heartsBg.appendChild(heart);
+      setTimeout(() => heart.remove(), (duration + 2) * 1000);
+    }
+
+    // Create initial hearts
+    for (let i = 0; i < 8; i++) {
+      setTimeout(createHeart, i * 600);
+    }
+    setInterval(createHeart, 2000);
+
+    // Screen navigation
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // "Нет" button — wrong answer
+    const btnNo = document.getElementById('btnNo');
+    const wrongAnswer = document.getElementById('wrongAnswer');
+    let noTimeout = null;
+
+    btnNo.addEventListener('click', () => {
+      if (noTimeout) clearTimeout(noTimeout);
+      wrongAnswer.classList.remove('show');
+      // Force reflow for re-triggering animation
+      void wrongAnswer.offsetWidth;
+      wrongAnswer.classList.add('show');
+      noTimeout = setTimeout(() => {
+        wrongAnswer.classList.remove('show');
+      }, 2000);
+    });
+
+    // "Да" button
+    document.getElementById('btnYes').addEventListener('click', () => {
+      showScreen('screen2');
+    });
+
+    // "А потом?" button
+    document.getElementById('btnNext').addEventListener('click', () => {
+      showScreen('screen3');
+    });
+  </script>
+</body>
+</html>
